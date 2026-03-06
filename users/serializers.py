@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
             'id', 'email', 'password', 'first_name', 'last_name', 
             'personal_number', 'city', 'street', 'district', 'address', 
             'building_number', 'apartment_number', 'phone_number', 'floor', 
-            'role', 'is_phone_verified', 'is_email_verified'
+            'role', 'residential_status', 'is_phone_verified', 'is_email_verified'
         )
         read_only_fields = ('role', 'is_phone_verified', 'is_email_verified')
 
@@ -32,5 +32,6 @@ class UserSerializer(serializers.ModelSerializer):
             apartment_number=validated_data['apartment_number'],
             phone_number=validated_data['phone_number'],
             floor=validated_data.get('floor', ''),
+            residential_status=validated_data.get('residential_status', 'OWNER')
         )
         return user

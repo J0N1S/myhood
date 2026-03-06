@@ -33,6 +33,10 @@ class User(AbstractUser):
         RESIDENT = 'RESIDENT', 'მაცხოვრებელი'
         TEMPORARY = 'TEMPORARY', 'დროებითი'
 
+    class ResidentialStatus(models.TextChoices):
+        OWNER = 'OWNER', 'მესაკუთრე'
+        TENANT = 'TENANT', 'არა მესაკუთრე'
+
     username = None # Remove the username field
     email = models.EmailField('email address', unique=True)
 
@@ -56,6 +60,11 @@ class User(AbstractUser):
         max_length=20,
         choices=Role.choices,
         default=Role.RESIDENT,
+    )
+    residential_status = models.CharField(
+        max_length=20,
+        choices=ResidentialStatus.choices,
+        default=ResidentialStatus.OWNER,
     )
     
     # Verification Flags
