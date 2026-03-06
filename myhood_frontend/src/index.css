@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Epilogue", sans-serif;
+  --color-primary: #3099fb;
+  --color-primary-50: #eaf5ff;
+  --color-primary-100: #cde6ff;
+  --color-primary-200: #9dceff;
+  --color-primary-300: #5ab5ff;
+  --color-primary-400: #3099fb;
+  --color-primary-500: #1980e6;
+  --color-primary-600: #0b63c4;
+  --color-primary-700: #0a509e;
+  --color-primary-800: #0c4383;
+  --color-primary-900: #103a6d;
+  --radius-2xl: 2.5rem;
+}
+
+@layer base {
+  body {
+    @apply font-display bg-[#f8fafc] text-slate-900;
+  }
+}
+
+@layer components {
+  .form-input-focus {
+    @apply focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&display=swap');
