@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
+import SignatureCheckbox from '../components/SignatureCheckbox';
 
 const TBILISI_DISTRICTS = [
   'აბანოთუბანი', 'ავშნიანი', 'ავჭალა', 'ავლაბარი', 'აეროპორტის დას.', 
@@ -418,18 +419,12 @@ export default function Register() {
             </div>
 
             {/* Terms Checkbox */}
-            <div className="flex items-center space-x-3 pt-2">
-              <input
-                type="checkbox"
-                id="terms"
-                name="terms"
+            <div className="pt-2">
+              <SignatureCheckbox 
                 checked={formData.terms}
-                onChange={handleChange}
-                className="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary"
+                onChange={(checked) => setFormData({ ...formData, terms: checked })}
+                label="ვეთანხმები წესებს და პირობებს"
               />
-              <label htmlFor="terms" className="text-sm text-slate-600 font-medium">
-                ვეთანხმები წესებს და პირობებს
-              </label>
             </div>
 
             <div className="pt-4">

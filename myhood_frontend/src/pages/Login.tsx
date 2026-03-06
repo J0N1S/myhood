@@ -10,6 +10,7 @@ export default function Login() {
   
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -22,7 +23,7 @@ export default function Login() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-           email: identifier, // My backend treats 'email' field in JSON as the identifier (can be email or phone)
+           email: identifier, 
            password: password 
         }),
       });
@@ -31,11 +32,14 @@ export default function Login() {
 
       if (response.ok) {
         setStatus('success');
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
-        // Successful login, could redirect to dashboard
+        
+        // Use either localStorage (persistent) or sessionStorage (session only)
+        const storage = rememberMe ? localStorage : sessionStorage;
+        storage.setItem('access_token', data.access);
+        storage.setItem('refresh_token', data.refresh);
+
         setTimeout(() => {
-            navigate('/profile'); // Redirects to the new profile page
+            navigate('/profile');
         }, 1000);
       } else {
          setStatus('error');
@@ -140,8 +144,13 @@ export default function Login() {
             <div className="flex items-center justify-between pt-2">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center">
-                  <input type="checkbox" className="peer sr-only" />
-                  <div className="w-5 h-5 border-2 border-slate-200 rounded-md peer-checked:bg-primary peer-checked:border-primary transition-all"></div>
+                  <input 
+                    type="checkbox" 
+                    className="peer sr-only" 
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <div className="w-5 h-5 border-2 border-slate-200 rounded-md peer-checked:bg-primary peer-checked:border-primary transition-all shadow-sm group-hover:border-primary/50"></div>
                   <div className="absolute inset-0 flex items-center justify-center text-white opacity-0 peer-checked:opacity-100 transition-opacity">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   </div>
