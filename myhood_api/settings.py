@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     # Local apps
     'users.apps.UsersConfig',
+    'passes.apps.PassesConfig',
+    'votes.apps.VotesConfig',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +166,7 @@ CACHES = {
         }
     }
 } # Change this in production
+
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

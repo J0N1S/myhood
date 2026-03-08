@@ -313,8 +313,8 @@ export default function Register() {
             </div>
 
             {/* Line 5: Street, Building, Floor, Apartment */}
-            <div className="grid grid-cols-4 gap-4">
-              <div className="space-y-1.5 col-span-4 sm:col-span-1">
+            <div className="grid grid-cols-6 gap-4">
+              <div className="space-y-1.5 col-span-6 sm:col-span-3">
                 <label className="text-xs font-semibold text-slate-700 ml-1 uppercase tracking-wider">ქუჩა</label>
                 <div className="relative">
                   <Building className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -329,7 +329,7 @@ export default function Register() {
                   />
                 </div>
               </div>
-              <div className="space-y-1.5 col-span-4 sm:col-span-1">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
                 <label className="text-xs font-semibold text-slate-700 ml-1 uppercase tracking-wider">კორპუსი</label>
                 <div className="relative">
                   <Building className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />

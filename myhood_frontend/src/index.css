@@ -27,5 +27,3 @@
     @apply focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all;
   }
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&display=swap');

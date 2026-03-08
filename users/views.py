@@ -4,13 +4,13 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.db.models import Q
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ResidentSerializer
 
 User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
 
@@ -30,6 +30,40 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+
+class ResidentsListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ResidentSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = User.objects.filter(
+            city=user.city,
+            district=user.district,
+            street=user.street,
+            building_number=user.building_number
+        ).order_by('apartment_number')
+        return qs
+
+class UserStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        base_qs = User.objects.filter(
+            city=user.city,
+            district=user.district,
+            street=user.street,
+            building_number=user.building_number
+        )
+        total_residents = base_qs.filter(apartment_number__isnull=False).count()
+        total_owners = base_qs.filter(residential_status='OWNER').count()
+        
+        return Response({
+            'total_residents': total_residents,
+            'total_owners': total_owners
+        })
+
 class PasswordResetRequestView(APIView):
     permission_classes = [AllowAny]
 
@@ -38,7 +72,7 @@ class PasswordResetRequestView(APIView):
         if not identifier:
             return Response({"error": "Identifier is required"}, status=status.HTTP_400_BAD_REQUEST)
         
-        user = User.objects.filter(email=identifier).first() or User.objects.filter(phone_number=identifier).first()
+        user = User.objects.filter(Q(email=identifier) | Q(phone_number=identifier)).first()
         if not user:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -68,7 +102,7 @@ class PasswordResetConfirmView(APIView):
         if not saved_otp or saved_otp != otp:
             return Response({"error": "Invalid or expired OTP"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.filter(email=identifier).first() or User.objects.filter(phone_number=identifier).first()
+        user = User.objects.filter(Q(email=identifier) | Q(phone_number=identifier)).first()
         if not user:
              return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 

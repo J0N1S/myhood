@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>კორპუსის ვიზუალიზაცია — MyHood</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f6ef7;
+      --primary-light: #e8ecfe;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f1f3f6;
+      min-height: 100vh;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── Top Bar ─── */
+    .topbar {
+      background: white;
+      border-bottom: 1px solid #e8ecf0;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #0f172a;
+    }
+
+    .topbar-brand .dot {
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .topbar-sub {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    /* ─── Layout ─── */
+    .main-layout {
+      flex: 1;
+      display: flex;
+      gap: 0;
+    }
+
+    /* ─── Sidebar Config ─── */
+    .sidebar {
+      width: 320px;
+      background: white;
+      border-right: 1px solid #e8ecf0;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .config-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .config-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .config-field label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #475569;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .config-field input, .config-field select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      color: #0f172a;
+      background: #f8fafc;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .config-field input:focus, .config-field select:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.1);
+    }
+
+    .btn-apply {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 16px;
+      background: var(--primary);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
+    }
+
+    .btn-apply:hover {
+      background: #3b5de7;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(79, 110, 247, 0.4);
+    }
+
+    .btn-apply:active {
+      transform: translateY(0);
+    }
+
+    /* Stats in sidebar */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e8ecf0;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* ─── Building Area ─── */
+    .building-area {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 40px 40px 40px 40px;
+      gap: 40px;
+      overflow: auto;
+    }
+
+    /* ─── Building ─── */
+    .building-structure {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .building {
+      display: flex;
+      flex-direction: column;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow:
+        0 30px 60px rgba(0,0,0,0.1),
+        0 8px 24px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255,255,255,0.7);
+      position: relative;
+      background: linear-gradient(180deg, #cdd2da 0%, #bec4ce 100%);
+    }
+
+    .roof {
+      height: 12px;
+      background: linear-gradient(180deg, #64748b, #94a3b8);
+      border-radius: 0;
+      border-bottom: 2px solid rgba(0,0,0,0.08);
+    }
+
+    /* Floor row: number | floor area | elevator shaft */
+    .floor-row {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .floor {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      flex: 1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      user-select: none;
+      min-width: 155px;
+    }
+
+    .floor-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(0,0,0,0.18);
+      transition: all 0.2s;
+    }
+
+    .floor:hover {
+      background: linear-gradient(90deg, 
+        rgba(79,110,247,0.08) 0%, 
+        rgba(79,110,247,0.25) 50%,
+        rgba(79,110,247,0.08) 100%
+      );
+    }
+
+    .floor:hover .floor-label {
+      color: var(--primary);
+      font-size: 12px;
+    }
+
+    .floor.active {
+      background: linear-gradient(90deg, 
+        rgba(234,88,12,0.08) 0%, 
+        rgba(234,88,12,0.35) 50%,
+        rgba(234,88,12,0.08) 100%
+      );
+    }
+
+    .floor.active .floor-label {
+      color: #ea580c;
+      font-size: 12px;
+    }
+
+    /* Elevator shaft */
+    .elevator-shaft {
+      display: flex;
+      gap: 0;
+      border-left: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .elevator-cell {
+      width: 27px;
+      height: 32px;
+      background: rgba(0,0,0,0.03);
+      border-right: 1px solid rgba(0,0,0,0.04);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .elevator-cell .shaft-line {
+      width: 2px;
+      height: 100%;
+      background: rgba(0,0,0,0.06);
+      border-radius: 2px;
+    }
+
+    /* Elevator label on roof */
+    .elevator-roof {
+      display: flex;
+      border-left: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .elevator-roof-cell {
+      width: 27px;
+      height: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ─── Ground / Entrance ─── */
+    .ground-level {
+      display: flex;
+      align-items: stretch;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .entrance-area {
+      flex: 1;
+      min-width: 155px;
+      height: 48px;
+      background: linear-gradient(180deg, #64748b, #475569);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 12px;
+      border-top: 2px solid rgba(0,0,0,0.1);
+      position: relative;
+      padding-bottom: 0;
+    }
+
+    .entrance-door {
+      width: 24px;
+      height: 36px;
+      background: linear-gradient(180deg, #334155, #1e293b);
+      border-radius: 4px 4px 0 0;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+    }
+
+    .entrance-door::after {
+      content: '';
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      width: 3px;
+      height: 3px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+    }
+
+    .entrance-number-right {
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0f172a;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      border: 1px solid #e8ecf0;
+      margin-bottom: 6px;
+    }
+
+    .elevator-ground {
+      display: flex;
+      border-left: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .elevator-ground-cell {
+      width: 27px;
+      height: 48px;
+      background: linear-gradient(180deg, #475569, #334155);
+      border-right: 1px solid rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ─── Info Panel ─── */
+    .info-panel {
+      width: 360px;
+      min-height: 200px;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 2.5rem;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      align-self: center;
+      flex-shrink: 0;
+    }
+
+    .info-panel.is-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .info-panel .icon-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .info-panel .icon-box svg {
+      width: 32px;
+      height: 32px;
+      color: #94a3b8;
+    }
+
+    .empty-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .empty-sub {
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+
+    .floor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .floor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #1e293b;
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .floor-badge svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .apt-count {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      background: rgba(255,255,255,0.6);
+      padding: 6px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .apartments-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .apartment-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .apt-number {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #0f172a;
+      min-width: 44px;
+    }
+
+    .apt-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 7px;
+    }
+
+    .apt-status.owner { background: #dcfce7; color: #16a34a; }
+    .apt-status.empty { background: #f1f5f9; color: #94a3b8; }
+
+    .apt-status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .apt-status.owner .dot { background: #22c55e; }
+    .apt-status.empty .dot { background: #cbd5e1; }
+
+    .apt-owner-name {
+      flex: 1;
+      text-align: right;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #64748b;
+    }
+
+    @media (max-width: 1024px) {
+      .main-layout { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; border-right: 0; border-bottom: 1px solid #e8ecf0; }
+      .building-area { flex-direction: column; align-items: center; }
+      .info-panel { width: 100%; max-width: 360px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span class="dot"></span> MyHood
+    </div>
+    <span class="topbar-sub">კორპუსის ვიზუალიზაცია — პროტოტიპი</span>
+  </div>
+
+  <div class="main-layout">
+    <!-- Sidebar / Configurator -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <span class="sidebar-title">⚙️ კონფიგურატორი</span>
+
+        <div class="config-row">
+          <div class="config-field">
+            <label>სართულები</label>
+            <input type="number" id="cfgFloors" value="16" min="1" max="50">
+          </div>
+          <div class="config-field">
+            <label>ბინები</label>
+            <input type="number" id="cfgApts" value="4" min="1" max="12">
+          </div>
+        </div>
+
+        <div class="config-row">
+          <div class="config-field">
+            <label>ლიფტები</label>
+            <input type="number" id="cfgElevators" value="2" min="0" max="6">
+          </div>
+          <div class="config-field">
+            <label>სადარბაზო</label>
+            <input type="number" id="cfgEntrance" value="1" min="1" max="20">
+          </div>
+        </div>
+
+        <button class="btn-apply" onclick="rebuildAll()">აგება</button>
+      </div>
+
+      <div class="sidebar-section">
+        <span class="sidebar-title">📊 სტატისტიკა</span>
+        <div class="stats-grid" id="statsGrid"></div>
+      </div>
+    </div>
+
+    <!-- Building + Info -->
+    <div class="building-area">
+      <div class="building-structure" id="buildingStructure"></div>
+
+      <div class="info-panel is-empty" id="infoPanel">
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 0h.008v.008h-.008V7.5Z" />
+          </svg>
+        </div>
+        <p class="empty-title">აირჩიეთ სართული</p>
+        <p class="empty-sub">მიატანეთ მაუსი შენობაზე</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const georgianNames = [
+      'ნიკა ბერიძე', 'მარიამ ჯაფარიძე', 'გიორგი წიკლაური', 'ანა ხარაიშვილი',
+      'დავით მეტრეველი', 'თამარ ნოზაძე', 'ლუკა ქავთარაძე', 'სოფო გელაშვილი',
+      'ალექსანდრე თურმანიძე', 'ელენე ბაქრაძე', 'ირაკლი ჩხაიძე', 'ნინო გოგიჩაშვილი',
+      'ბექა ლომიძე', 'ქეთი ავალიანი', 'ზურაბ შენგელია', 'ლიკა ფოცხვერაშვილი'
+    ];
+
+    let buildingData = null;
+
+    function generateData(floors, aptsPerFloor) {
+      const data = { floors: [], totalOwners: 0, totalEmpty: 0 };
+      for (let f = 1; f <= floors; f++) {
+        const apts = [];
+        for (let a = 1; a <= aptsPerFloor; a++) {
+          const isOwner = Math.random() > 0.35;
+          if (isOwner) data.totalOwners++; else data.totalEmpty++;
+          apts.push({
+            number: f * 100 + a,
+            isOwner,
+            ownerName: isOwner ? georgianNames[Math.floor(Math.random() * georgianNames.length)] : null
+          });
+        }
+        data.floors.push({ floor: f, apartments: apts });
+      }
+      return data;
+    }
+
+    function rebuildAll() {
+      const numFloors = Math.max(1, Math.min(50, parseInt(document.getElementById('cfgFloors').value) || 16));
+      const numApts = Math.max(1, Math.min(12, parseInt(document.getElementById('cfgApts').value) || 4));
+      const numElevators = Math.max(0, Math.min(6, parseInt(document.getElementById('cfgElevators').value) || 2));
+      const entranceNum = parseInt(document.getElementById('cfgEntrance').value) || 1;
+
+      buildingData = generateData(numFloors, numApts);
+      renderBuilding(numFloors, numElevators, entranceNum);
+      renderStats(numFloors, numApts);
+      resetInfoPanel();
+    }
+
+    function renderBuilding(numFloors, numElevators, entranceNum) {
+      const container = document.getElementById('buildingStructure');
+
+      // Roof elevator labels
+      let roofElevators = '';
+      if (numElevators > 0) {
+        roofElevators = `<div class="elevator-roof">${Array.from({length: numElevators}, (_, i) => `<div class="elevator-roof-cell">L${i+1}</div>`).join('')}</div>`;
+      }
+
+      // Floor rows
+      let floorsHtml = '';
+      for (let i = numFloors; i >= 1; i--) {
+        let elevCells = '';
+        if (numElevators > 0) {
+          elevCells = `<div class="elevator-shaft">${Array.from({length: numElevators}, () => `<div class="elevator-cell"><div class="shaft-line"></div></div>`).join('')}</div>`;
+        }
+        floorsHtml += `
+          <div class="floor-row">
+            <div class="floor" data-floor="${i}" onmouseenter="showFloorInfo(${i})" onclick="selectFloor(this, ${i})">
+              <span class="floor-label">სართული ${i}</span>
+            </div>
+            ${elevCells}
+          </div>`;
+      }
+
+      // Ground elevator cells - using numbers instead of SVG arrows
+      let groundElevCells = '';
+      if (numElevators > 0) {
+        groundElevCells = `<div class="elevator-ground">${Array.from({length: numElevators}, (_, i) => `<div class="elevator-ground-cell">L${i+1}</div>`).join('')}</div>`;
+      }
+
+      container.innerHTML = `
+        <div class="building">
+          <div style="display:flex;">
+            <div class="roof" style="flex:1; min-width:155px;"></div>
+            ${roofElevators}
+          </div>
+          ${floorsHtml}
+        </div>
+        <div class="ground-level">
+          <div class="entrance-area">
+            <div class="entrance-door"></div>
+            <div class="entrance-number-right">${entranceNum}</div>
+          </div>
+          ${groundElevCells}
+        </div>
+      `;
+    }
+
+    function selectFloor(el, floorNum) {
+      document.querySelectorAll('.floor.active').forEach(f => f.classList.remove('active'));
+      el.classList.add('active');
+      showFloorInfo(floorNum);
+    }
+
+    function showFloorInfo(floorNum) {
+      if (!buildingData) return;
+      const floor = buildingData.floors.find(f => f.floor === floorNum);
+      if (!floor) return;
+      const ownerCount = floor.apartments.filter(a => a.isOwner).length;
+      const panel = document.getElementById('infoPanel');
+      panel.classList.remove('is-empty');
+      panel.innerHTML = `
+        <div class="floor-header">
+          <div class="floor-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+            </svg>
+            სართული ${floorNum}
+          </div>
+          <span class="apt-count">${ownerCount}/${floor.apartments.length} დარეგისტრირებული</span>
+        </div>
+        <div class="apartments-grid">
+          ${floor.apartments.map(apt => `
+            <div class="apartment-row">
+              <span class="apt-number">${apt.number}</span>
+              <span class="apt-status ${apt.isOwner ? 'owner' : 'empty'}">
+                <span class="dot"></span>
+                ${apt.isOwner ? 'მფლობელი' : 'თავისუფალი'}
+              </span>
+              <span class="apt-owner-name">${apt.ownerName || '—'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function resetInfoPanel() {
+      const panel = document.getElementById('infoPanel');
+      panel.classList.add('is-empty');
+      panel.innerHTML = `
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 0h.008v.008h-.008V7.5Z" />
+          </svg>
+        </div>
+        <p class="empty-title">აირჩიეთ სართული</p>
+        <p class="empty-sub">მიატანეთ მაუსი შენობაზე</p>
+      `;
+    }
+
+    function renderStats(numFloors, numApts) {
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-value">${numFloors}</div>
+          <div class="stat-label">სართული</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${numFloors * numApts}</div>
+          <div class="stat-label">ბინა</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${buildingData.totalOwners}</div>
+          <div class="stat-label">მფლობელი</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${buildingData.totalEmpty}</div>
+          <div class="stat-label">თავისუფალი</div>
+        </div>
+      `;
+    }
+
+    // Init
+    rebuildAll();
+  </script>
+</body>
+</html>

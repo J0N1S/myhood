@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ka"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>myhood: ხმის მიცემა (Minimalist)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3099fb",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1923",
+            },
+            fontFamily: {
+              "display": ["Noto Sans Georgian", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.33rem", "lg": "0.66rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Noto Sans Georgian', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="flex flex-col w-64 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shrink-0 hidden md:flex">
+<div class="flex items-center gap-3 px-6 py-6 border-b border-slate-200 dark:border-slate-800">
+<div class="size-8 flex items-center justify-center bg-primary text-white rounded-lg">
+<span class="material-symbols-outlined text-xl">location_city</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-black tracking-tight">myhood</h2>
+</div>
+<nav class="flex flex-col gap-2 px-4 py-6 overflow-y-auto grow">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                მთავარი
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">group</span>
+                მეზობლები
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                ფინანსები
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined">how_to_vote</span>
+                ხმის მიცემა
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">badge</span>
+                სტუმრები
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">handyman</span>
+                პროფესიონალები
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">description</span>
+                დოკუმენტები
+            </a>
+</nav>
+<div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">settings</span>
+                პარამეტრები
+            </a>
+</div>
+</aside>
+<div class="flex flex-col flex-1 h-full overflow-hidden">
+<header class="flex items-center justify-between bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 py-4 shrink-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-slate-500 hover:text-slate-900 dark:hover:text-white">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<h1 class="text-xl font-bold text-slate-900 dark:text-white hidden sm:block">ხმის მიცემა</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right hidden sm:block text-sm">
+<p class="font-bold text-slate-900 dark:text-white">მოგესალმებით, ალექს</p>
+<p class="text-slate-500 dark:text-slate-400">ბინა 42</p>
+</div>
+<button class="relative text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-0 right-0 size-2.5 bg-red-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-slate-200 dark:border-slate-700 cursor-pointer" data-alt="User profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAN5XQ8kUqLRbtTV9pT7ARKIb7P_ahwT7eSA58gGzw12_s2JNvXPvfY7-96yFtfDDkXoCkB1psH3afrawpx0tQVVCMOEfEDWJzvpfxVen62k7UqG7yLKrXFPMSomTiM02rzkJX6V4s1IZOQkNs1JhWf7Il7e-wQ3_k1uV9cUo0Qoj1qpfiibYQ9xxpd4sHYUd1s_q-SBdTqTWoFpRXJHYK41nPpLDRx-LKkyv4w0X7plDUltUl-NVvWytkLOGtMwofZQpKmXbaOHuA");'></div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-4 md:p-8">
+<div class="w-full">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="text-slate-900 dark:text-white text-3xl font-black tracking-tight mb-2">ხმის მიცემა და ინიციატივები</h1>
+<p class="text-slate-600 dark:text-slate-400 text-sm md:text-base">მიიღეთ მონაწილეობა საზოგადოების გადაწყვეტილებებში, თვალი ადევნეთ აქტიურ გამოკითხვებს და გადახედეთ წარსულ რეზოლუციებს.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary text-white hover:bg-primary/90 px-6 py-3 rounded-lg font-bold transition-all shadow-sm hover:shadow-md shrink-0 w-full md:w-auto">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                            ინიციატივის დამატება
+                        </button>
+</div>
+<div class="mb-10">
+<div class="flex items-center gap-3 mb-6">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">აქტიური გამოკითხვები</h2>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col md:flex-row">
+<div class="md:w-[320px] h-48 md:h-auto bg-cover bg-center relative shrink-0" data-alt="Security cameras abstract representation" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDpRTo9qMYerEfp6eHk4lkpg3MxQfhsKppogOlzjsakQSt4nlcZH8BKktJOUMKBs_YUEj7P2KCmI5qv_UplCizf5zMJt9EApcXBhE8OBahVdI_l1tKOvZTw__L12W8G9jNWW9W-rpwJAlaLBadN8-LIbjHvRKpRw7uXMgl11qSdpXSGraLHcGbEYveNrd3I-mz2wvTP2G5oa-gMn-iQahlwco9Y2qtbIXl3B2fk8TXDs5UKV9zyhZ3m5UiFK2uCUGZluqA-T9YOfC0");'>
+</div>
+<div class="p-6 flex flex-col justify-between w-full">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">ახალი კამერების სისტემა</h3>
+<span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold px-2.5 py-1 rounded">სრულდება 3 დღეში</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 max-w-2xl">შემოთავაზება ლობისა და ავტოფარეხის კამერების განახლების შესახებ, უსაფრთხოების გაუმჯობესების მიზნით.</p>
+</div>
+<div class="flex flex-col lg:flex-row lg:items-end gap-6 justify-between">
+<div class="w-full max-w-md">
+<div class="flex justify-between text-sm font-bold mb-2">
+<span class="text-slate-700 dark:text-slate-300">მონაწილეობა</span>
+<span class="text-primary">65%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-4 mb-2 overflow-hidden">
+<div class="bg-primary h-4 rounded-full font-bold" style="width: 65%"></div>
+</div>
+</div>
+<div class="flex gap-3 shrink-0">
+<button class="flex items-center justify-center gap-2 cursor-pointer rounded-lg h-10 px-6 bg-primary hover:bg-primary/90 text-white font-bold transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+                                        კი
+                                    </button>
+<button class="flex items-center justify-center gap-2 cursor-pointer rounded-lg h-10 px-6 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_down</span>
+                                        არა
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-6">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">დასრულებული</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm flex flex-col relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+<div class="p-5 pl-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-green-500">home_repair_service</span>
+<h4 class="text-slate-900 dark:text-white font-bold text-base leading-tight">ახალი სახურავი 2023</h4>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-bold text-sm text-green-600 dark:text-green-400">მიღებულია</span>
+<a class="text-sm font-bold text-primary hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span> PDF ოქმი
+                                </a>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm flex flex-col relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
+<div class="p-5 pl-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-red-500">chair</span>
+<h4 class="text-slate-900 dark:text-white font-bold text-base leading-tight">ლობის რემონტი</h4>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-bold text-sm text-red-600 dark:text-red-400">უარყოფილია</span>
+<a class="text-sm font-bold text-primary hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span> PDF ოქმი
+                                </a>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm flex flex-col relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+<div class="p-5 pl-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-green-500">park</span>
+<h4 class="text-slate-900 dark:text-white font-bold text-base leading-tight">ეზოს გამწვანება</h4>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-bold text-sm text-green-600 dark:text-green-400">მიღებულია</span>
+<a class="text-sm font-bold text-primary hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span> PDF ოქმი
+                                </a>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm flex flex-col relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+<div class="p-5 pl-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-green-500">local_parking</span>
+<h4 class="text-slate-900 dark:text-white font-bold text-base leading-tight">პარკინგის წესები</h4>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-bold text-sm text-green-600 dark:text-green-400">მიღებულია</span>
+<a class="text-sm font-bold text-primary hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span> PDF ოქმი
+                                </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

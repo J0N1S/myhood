@@ -17,6 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('role', 'is_phone_verified', 'is_email_verified')
 
+class ResidentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'first_name', 'last_name', 'floor', 'apartment_number', 'residential_status', 'phone_number'
+        )
+
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
