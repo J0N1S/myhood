@@ -10,7 +10,19 @@ class PollViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser, JSONParser)
     serializer_class = PollSerializer
-    queryset = Poll.objects.all().order_by('-created_at')
+    def get_queryset(self):
+        user = self.request.user
+        return Poll.objects.filter(
+            created_by__building_number=user.building_number
+        ).select_related('created_by').prefetch_related(
+            'votes'
+        ).order_by('-created_at')
+
+    def destroy(self, request, *args, **kwargs):
+        poll = self.get_object()
+        if poll.created_by != request.user:
+            return Response({'detail': 'მხოლოდ შემქმნელს შეუძლია წაშლა'}, status=status.HTTP_403_FORBIDDEN)
+        return super().destroy(request, *args, **kwargs)
 
     @action(detail=True, methods=['post'])
     def vote(self, request, pk=None):

@@ -40,9 +40,11 @@ class Poll(models.Model):
     def passed(self):
         if self.is_active:
             return None
-        if self.total_votes == 0:
+        total = self.votes.count()
+        if total == 0:
             return False
-        yes_percent = (self.yes_votes / self.total_votes) * 100
+        yes = self.votes.filter(choice='yes').count()
+        yes_percent = (yes / total) * 100
         return yes_percent >= self.passing_percentage
 
     def __str__(self):

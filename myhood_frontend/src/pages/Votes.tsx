@@ -13,6 +13,7 @@ import {
   Settings, 
   Menu, 
   Bell, 
+  HeartHandshake,
   Plus, 
   ThumbsUp, 
   ThumbsDown,
@@ -43,6 +44,8 @@ const Sidebar = ({ userData, activePage }: { userData: any, activePage: string }
       <SidebarLink icon={<IdCard size={20} />} label="ჭიშკრის კონტროლი" to="/passes" active={activePage === 'passes'} />
       <SidebarLink icon={<Wallet size={20} />} label="გადასახადები" to="/billing" active={activePage === 'billing'} />
       <SidebarLink icon={<Vote size={20} />} label="ხმის მიცემა" to="/votes" active={activePage === 'votes'} />
+      <SidebarLink icon={<FileText size={20} />} label="დოკუმენტები" to="/documents" active={activePage === 'documents'} />
+      <SidebarLink icon={<HeartHandshake size={20} />} label="სამეზობლო" to="/neighborhood" active={activePage === 'neighborhood'} />
       <SidebarLink icon={<Settings size={20} />} label="პარამეტრები" to="/settings" active={activePage === 'settings'} />
     </nav>
     
@@ -103,7 +106,7 @@ const HeaderMobile = ({ handleLogout }: { handleLogout: () => void }) => (
 );
 
 export default function Votes() {
-  const [userData, setUserData] = useState<{ first_name?: string, last_name?: string, apartment_number?: string } | null>(null);
+  const [userData, setUserData] = useState<{ id?: number, first_name?: string, last_name?: string, apartment_number?: string } | null>(null);
   const [polls, setPolls] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPoll, setNewPoll] = useState({
@@ -117,6 +120,7 @@ export default function Votes() {
   const [userStats, setUserStats] = useState({ total_residents: 1, total_owners: 1 });
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [selectedPoll, setSelectedPoll] = useState<any | null>(null);
+  const [deletingPollId, setDeletingPollId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -202,6 +206,36 @@ export default function Votes() {
       } else {
         const err = await response.json();
         alert(err.detail || 'შეცდომა ხმის მიცემისას');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDeletePoll = (pollId: string) => {
+    setDeletingPollId(pollId);
+  };
+
+  const confirmDeletePoll = async () => {
+    if (!deletingPollId) return;
+    
+    const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/votes/${deletingPollId}/`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        setDeletingPollId(null);
+        if (selectedPoll?.id === deletingPollId) {
+          setSelectedPoll(null);
+        }
+        fetchPolls(token);
+      } else {
+        const err = await response.json();
+        alert(err.detail || 'შეცდომა წაშლისას');
       }
     } catch (e) {
       console.error(e);
@@ -321,6 +355,7 @@ export default function Votes() {
                   {activePolls.map(poll => {
                     const daysRemaining = Math.max(0, Math.ceil((new Date(poll.end_date).getTime() - new Date().getTime()) / (1000 * 3600 * 24)));
                     const yesPercent = poll.total_votes > 0 ? (poll.yes_votes / poll.total_votes) * 100 : 0;
+                    const noPercent = poll.total_votes > 0 ? (poll.no_votes / poll.total_votes) * 100 : 0;
                     const imageUrl = poll.image || "https://images.unsplash.com/photo-1557597774-9d273e3871ee?q=80&w=1000&auto=format&fit=crop";
                     const costPerResident = poll.budget > 0 ? 
                       Math.round(poll.budget / (poll.owners_only ? userStats.total_owners : userStats.total_residents)) : 0;
@@ -336,9 +371,20 @@ export default function Votes() {
                         <div className="p-6 flex flex-col flex-1">
                           <div className="flex justify-between items-start mb-3 gap-2">
                             <h3 className="text-slate-900 text-xl font-black leading-tight line-clamp-2">{poll.title}</h3>
-                            <span className="bg-blue-50 text-primary border border-primary/20 text-xs font-bold px-3 py-1.5 rounded-xl shrink-0">
-                               სრულდება {daysRemaining} დღეში
-                            </span>
+                            <div className="flex items-center gap-2 shrink-0">
+                                {String(userData?.id) === String(poll.created_by) && (
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleDeletePoll(poll.id); }}
+                                        className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                        title="წაშლა"
+                                    >
+                                        <X size={18} />
+                                    </button>
+                                )}
+                                <span className="bg-blue-50 text-primary border border-primary/20 text-xs font-bold px-3 py-1.5 rounded-xl">
+                                  სრულდება {daysRemaining} დღეში
+                                </span>
+                            </div>
                           </div>
                           
                           {poll.document && (
@@ -368,10 +414,14 @@ export default function Votes() {
                             <div className="pt-2">
                               <div className="flex justify-between text-xs font-bold mb-2">
                                 <span className="text-slate-400">მონაწილეობა ({poll.total_votes} ხმა)</span>
-                                <span className="text-primary">{Math.round(yesPercent)}% ეთანხმება</span>
+                                <div className="flex gap-2">
+                                  <span className="text-emerald-500">{Math.round(yesPercent)}% კი</span>
+                                  <span className="text-red-500">{Math.round(noPercent)}% არა</span>
+                                </div>
                               </div>
                               <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden flex">
-                                <motion.div initial={{ width: 0 }} animate={{ width: `${yesPercent}%` }} transition={{ duration: 1, delay: 0.2 }} className="bg-primary h-full" />
+                                <motion.div initial={{ width: 0 }} animate={{ width: `${yesPercent}%` }} transition={{ duration: 1, delay: 0.2 }} className="bg-emerald-500 h-full" />
+                                <motion.div initial={{ width: 0 }} animate={{ width: `${noPercent}%` }} transition={{ duration: 1, delay: 0.2 }} className="bg-red-500 h-full" />
                               </div>
                             </div>
                           </div>
@@ -380,7 +430,7 @@ export default function Votes() {
                             <button 
                               onClick={(e) => { e.stopPropagation(); handleVote(poll.id, 'yes'); }}
                               className={`flex-1 flex items-center justify-center gap-2 rounded-xl h-12 font-bold transition-all active:scale-[0.98] ${
-                                poll.user_vote === 'yes' ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-primary hover:bg-blue-600 text-white shadow-primary/20'
+                                poll.user_vote === 'yes' ? 'bg-emerald-500 text-white shadow-emerald-500/20' : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200'
                               }`}
                             >
                               <ThumbsUp size={18} />
@@ -389,7 +439,7 @@ export default function Votes() {
                             <button 
                               onClick={(e) => { e.stopPropagation(); handleVote(poll.id, 'no'); }}
                               className={`flex-1 flex items-center justify-center gap-2 rounded-xl h-12 font-bold transition-all active:scale-[0.98] ${
-                                poll.user_vote === 'no' ? 'bg-red-500 text-white shadow-red-500/20' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200'
+                                poll.user_vote === 'no' ? 'bg-red-500 text-white shadow-red-500/20' : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200'
                               }`}
                             >
                               <ThumbsDown size={18} />
@@ -724,14 +774,19 @@ export default function Votes() {
                         </div>
                         <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">საჭიროა {selectedPoll.passing_percentage}%</span>
                       </div>
-                      <span className="text-sm font-bold text-slate-800">
-                        {selectedPoll.total_votes > 0 ? Math.round((selectedPoll.yes_votes / selectedPoll.total_votes) * 100) : 0}% მომხრე
-                      </span>
+                      <div className="flex gap-2 text-sm font-bold text-slate-800">
+                        <span className="text-emerald-500">{selectedPoll.total_votes > 0 ? Math.round((selectedPoll.yes_votes / selectedPoll.total_votes) * 100) : 0}% კი</span>
+                        <span className="text-red-500">{selectedPoll.total_votes > 0 ? Math.round((selectedPoll.no_votes / selectedPoll.total_votes) * 100) : 0}% არა</span>
+                      </div>
                     </div>
-                    <div className="w-full bg-slate-200/50 rounded-full h-2 mt-1 overflow-hidden">
+                    <div className="w-full bg-slate-200/50 rounded-full h-2 mt-1 overflow-hidden flex">
                       <div 
-                        className={`h-full rounded-full transition-all duration-1000 ${selectedPoll.is_active ? 'bg-primary' : (selectedPoll.passed ? 'bg-emerald-500' : 'bg-red-400')}`} 
+                        className={`h-full transition-all duration-1000 bg-emerald-500`} 
                         style={{ width: `${selectedPoll.total_votes > 0 ? (selectedPoll.yes_votes / selectedPoll.total_votes) * 100 : 0}%` }}
+                      ></div>
+                      <div 
+                        className={`h-full transition-all duration-1000 bg-red-500`} 
+                        style={{ width: `${selectedPoll.total_votes > 0 ? (selectedPoll.no_votes / selectedPoll.total_votes) * 100 : 0}%` }}
                       ></div>
                     </div>
                   </div>
@@ -751,6 +806,47 @@ export default function Votes() {
               </div>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {deletingPollId && (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+                onClick={() => setDeletingPollId(null)}
+            >
+                <motion.div
+                    initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                    className="bg-red-500/10 backdrop-blur-2xl border border-red-500/20 rounded-[2rem] w-full max-w-sm shadow-[0_8px_32px_rgba(239,68,68,0.2)] p-8 text-center"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="w-16 h-16 bg-red-500/20 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-red-500/30">
+                        <X size={32} />
+                    </div>
+                    <h3 className="text-xl font-black text-slate-900 mb-2">გამოკითხვის წაშლა</h3>
+                    <p className="text-sm font-bold text-slate-600 mb-8">
+                        ნამდვილად გსურთ ამ გამოკითხვის წაშლა? ეს ქმედება შეუქცევადია.
+                    </p>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setDeletingPollId(null)}
+                            className="flex-1 py-3.5 px-4 bg-white/50 hover:bg-white/80 border border-red-500/10 text-slate-700 rounded-xl font-bold transition-all"
+                        >
+                            გაუქმება
+                        </button>
+                        <button
+                            onClick={confirmDeletePoll}
+                            className="flex-1 py-3.5 px-4 bg-red-600 text-white hover:bg-red-700 rounded-xl font-bold transition-all shadow-lg shadow-red-600/20"
+                        >
+                            წაშლა
+                        </button>
+                    </div>
+                </motion.div>
+            </motion.div>
         )}
       </AnimatePresence>
     </div>

@@ -24,6 +24,8 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/passes/', include('passes.urls')),
     path('api/votes/', include('votes.urls')),
+    path('api/documents/', include('documents.urls')),
+    path('api/neighborhood/', include('neighborhood.urls')),
 ]
 
 if settings.DEBUG:

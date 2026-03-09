@@ -20,7 +20,9 @@ import {
   UserCheck,
   Hash,
   Building2,
-  Vote
+  Vote,
+  FileText,
+  HeartHandshake
 } from 'lucide-react';
 
 const Sidebar = ({ userData, activePage }: { userData: any, activePage: string }) => (
@@ -38,6 +40,8 @@ const Sidebar = ({ userData, activePage }: { userData: any, activePage: string }
       <SidebarLink icon={<DoorOpen size={22} />} label="ჭიშკრის კონტროლი" to="/passes" active={activePage === 'passes'} />
       <SidebarLink icon={<Wallet size={22} />} label="გადასახადები" to="#" active={activePage === 'billing'} />
       <SidebarLink icon={<Vote size={22} />} label="ხმის მიცემა" to="/votes" active={activePage === 'votes'} />
+      <SidebarLink icon={<FileText size={22} />} label="დოკუმენტები" to="/documents" active={activePage === 'documents'} />
+      <SidebarLink icon={<HeartHandshake size={22} />} label="სამეზობლო" to="/neighborhood" active={activePage === 'neighborhood'} />
       <SidebarLink icon={<Settings size={22} />} label="პარამეტრები" to="/profile" active={activePage === 'profile'} />
     </nav>
     <div className="p-6 border-t border-slate-50">

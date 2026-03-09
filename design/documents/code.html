@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ka"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>myhood: დოკუმენტები და საკადასტრო</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3099fb",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["Noto Sans Georgian", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "none": "0",
+                        "sm": "0.125rem",
+                        "DEFAULT": "0.375rem",
+                        "md": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px",
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Noto Sans Georgian', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-md">
+<span class="material-symbols-outlined text-white text-2xl fill">apartment</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">myhood</h1>
+</div>
+<nav class="flex-1 p-4 flex flex-col gap-1 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+<span class="text-[15px] font-medium">მთავარი გვერდი</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">payments</span>
+<span class="text-[15px] font-medium">გადახდები</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">forum</span>
+<span class="text-[15px] font-medium">დისკუსიები</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md bg-primary/10 text-primary font-semibold" href="#">
+<span class="material-symbols-outlined fill">description</span>
+<span class="text-[15px]">დოკუმენტები</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">map</span>
+<span class="text-[15px] font-medium">საკადასტრო</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">campaign</span>
+<span class="text-[15px]">განცხადებები</span>
+</a>
+<div class="mt-6 mb-2 px-3 text-[11px] font-bold text-slate-400 uppercase tracking-widest">ადმინისტრირება</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">groups</span>
+<span class="text-[15px]">მოსახლეობა</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">settings</span>
+<span class="text-[15px]">პარამეტრები</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABkSeTHhPYKBJmxnUo4A2ALGXXFDef7YrtD1o6ZTB7RyTNkPBIfcQZn1Nni7-x7GUxUtOGJtoSfQsEZlu9_QXpjTAN8UG97TmYdUhw7wiI-kNFoAr5AiCvRr7bmW_WytKcwmmihXT9AN-WCZwKJNE3wR5Vi1HKIbMlokGjlIB2IP8uglspv3E9DRI8G1hARCBdRciJSiDwbCgfArVGqHPP7SLZPjQw0cx9k1_vW4Brh4RhmJdMq6cwINpkUbU1iDTbnIROlDMsmkI"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">გიორგი ა.</p>
+<p class="text-xs text-slate-500 truncate">ბინა 14</p>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-slate-950">
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between px-8 shrink-0">
+<h2 class="text-lg font-bold text-slate-800 dark:text-white">დოკუმენტების მართვა</h2>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-md text-sm focus:ring-2 focus:ring-primary w-64" placeholder="ფაილის ძებნა..." type="text"/>
+</div>
+<button class="relative p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-md hover:bg-primary/90 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+                ახალი
+            </button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto custom-scrollbar p-8">
+<div class="max-w-6xl mx-auto space-y-6">
+<div class="space-y-4">
+<div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 text-primary border border-primary shadow-sm rounded-md text-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-xl">folder</span>
+                        საერთო
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-slate-300 rounded-md text-sm font-medium transition-all">
+<span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+                        ფინანსური
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-slate-300 rounded-md text-sm font-medium transition-all">
+<span class="material-symbols-outlined text-xl">gavel</span>
+                        წესდება
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-slate-300 rounded-md text-sm font-medium transition-all">
+<span class="material-symbols-outlined text-xl">history_edu</span>
+                        ოქმები
+                    </button>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">წელი:</span>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded-full transition-all">ყველა</button>
+<button class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-medium rounded-full hover:border-primary/50 transition-all">2024</button>
+<button class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-medium rounded-full hover:border-primary/50 transition-all">2023</button>
+<button class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-medium rounded-full hover:border-primary/50 transition-all">2022</button>
+</div>
+</div>
+</div>
+<section>
+<div class="group relative flex flex-col items-center justify-center p-12 border-2 border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary hover:bg-primary/5 rounded-md transition-all cursor-pointer">
+<div class="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-slate-400 group-hover:text-primary transition-colors">cloud_upload</span>
+</div>
+<h3 class="text-lg font-bold mb-1">ფაილის ატვირთვა</h3>
+<p class="text-sm text-slate-500 mb-6">გადმოაჩოჩეთ ფაილი ან დააკლიკეთ ასატვირთად</p>
+<div class="flex gap-4">
+<span class="text-xs bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full text-slate-500">PDF</span>
+<span class="text-xs bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full text-slate-500">DOCX</span>
+<span class="text-xs bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full text-slate-500">JPG</span>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-700 dark:text-slate-200">ბოლოს ატვირთული</h3>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+</button>
+<button class="p-1.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400">
+<span class="material-symbols-outlined text-[20px]">list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-white dark:bg-slate-900 p-5 rounded-md border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-md flex items-center justify-center text-red-500">
+<span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">PDF</span>
+</div>
+<h4 class="font-bold text-[15px] mb-1 truncate" title="ამხანაგობის_კრება_ოქტომბერი.pdf">ამხანაგობის_კრება_ოქტომბერი.pdf</h4>
+<div class="flex items-center justify-between text-xs text-slate-500 mb-6">
+<span>12 ოქტ, 2024</span>
+<span>2.4 MB</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                ნახვა
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                                ჩამოტვირთვა
+                            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-md border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-md flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined text-3xl">description</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">DOCX</span>
+</div>
+<h4 class="font-bold text-[15px] mb-1 truncate" title="შემოსავლების_ანგარიში_2023.docx">შემოსავლების_ანგარიში_2023.docx</h4>
+<div class="flex items-center justify-between text-xs text-slate-500 mb-6">
+<span>05 ოქტ, 2023</span>
+<span>1.1 MB</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                ნახვა
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                                ჩამოტვირთვა
+                            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-md border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-green-50 dark:bg-green-900/20 rounded-md flex items-center justify-center text-green-500">
+<span class="material-symbols-outlined text-3xl">image</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">IMG</span>
+</div>
+<h4 class="font-bold text-[15px] mb-1 truncate" title="სახურავის_დაზიანება_სურათი.jpg">სახურავის_დაზიანება_სურათი.jpg</h4>
+<div class="flex items-center justify-between text-xs text-slate-500 mb-6">
+<span>28 სექ, 2023</span>
+<span>4.2 MB</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                ნახვა
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                                ჩამოტვირთვა
+                            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-md border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-md flex items-center justify-center text-red-500">
+<span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">PDF</span>
+</div>
+<h4 class="font-bold text-[15px] mb-1 truncate" title="უსაფრთხოების_წესები_2023.pdf">უსაფრთხოების_წესები_2023.pdf</h4>
+<div class="flex items-center justify-between text-xs text-slate-500 mb-6">
+<span>15 სექ, 2023</span>
+<span>3.2 MB</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                ნახვა
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                                ჩამოტვირთვა
+                            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-md border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-red-50 dark:bg-red-900/20 rounded-md flex items-center justify-center text-red-500">
+<span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">PDF</span>
+</div>
+<h4 class="font-bold text-[15px] mb-1 truncate" title="წესდება_2023_განახლებული.pdf">წესდება_2023_განახლებული.pdf</h4>
+<div class="flex items-center justify-between text-xs text-slate-500 mb-6">
+<span>01 სექ, 2023</span>
+<span>5.1 MB</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                ნახვა
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                                ჩამოტვირთვა
+                            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-md border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-md flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined text-3xl">description</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">DOCX</span>
+</div>
+<h4 class="font-bold text-[15px] mb-1 truncate" title="ხელშეკრულება_დასუფთავება.docx">ხელშეკრულება_დასუფთავება.docx</h4>
+<div class="flex items-center justify-between text-xs text-slate-500 mb-6">
+<span>25 აგვ, 2023</span>
+<span>0.8 MB</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                ნახვა
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 bg-primary/10 text-primary hover:bg-primary/20 rounded-md text-xs font-bold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                                ჩამოტვირთვა
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<div class="flex justify-center pt-4 pb-8">
+<button class="px-8 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm">
+                    მეტის ჩვენება
+                </button>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>
